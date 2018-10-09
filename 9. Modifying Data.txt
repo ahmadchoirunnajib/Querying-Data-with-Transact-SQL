@@ -1,0 +1,64 @@
+Answer
+
+1.
+-- Finish the INSERT statement
+INSERT INTO SalesLT.Product (Name, ProductNumber, StandardCost, ListPrice, ProductCategoryID, SellStartDate)
+VALUES
+('LED Lights', 'LT-L123', 2.56, 12.99, 37, GETDATE());
+
+-- Get last identity value that was inserted
+SELECT SCOPE_IDENTITY();
+
+-- Finish the SELECT statement
+Select * FROM SalesLT.Product
+WHERE ProductID = SCOPE_IDENTITY();
+
+2.
+-- Insert product category
+INSERT INTO SalesLT.ProductCategory (ParentProductCategoryID, Name)
+VALUES
+(4, 'Bells and Horns');
+
+-- Insert 2 products
+INSERT INTO SalesLT.Product (Name, ProductNumber, StandardCost, ListPrice, ProductCategoryID, SellStartDate)
+VALUES
+('Bicycle Bell', 'BB-RING', 2.47, 4.99, IDENT_CURRENT('SalesLT.ProductCategory'), GETDATE()),
+('Bicycle Horn', 'BB-PARP', 1.29, 3.75, IDENT_CURRENT('SalesLT.ProductCategory'), GETDATE());
+
+-- Check if products are properly inserted
+SELECT c.Name As Category, p.Name AS Product
+FROM SalesLT.product AS p
+JOIN SalesLT.ProductCategory as c ON p.ProductCategoryID = c.ProductCategoryID
+WHERE p.ProductCategoryID = IDENT_CURRENT('SalesLT.ProductCategory');
+
+3.
+-- Update the SalesLT.Product table
+update SalesLT.Product
+set ListPrice = ListPrice * 1.1
+WHERE ProductCategoryID =
+  (select ProductCategoryID FROM SalesLT.ProductCategory where Name = 'Bells and Horns');
+
+-- You can add a SELECT statement to check the update
+
+
+4.
+-- Finish the UPDATE query
+update SalesLT.Product
+set DiscontinuedDate = GETDATE()
+WHERE ProductCategoryID = 37 and ProductNumber <> 'LT-L123';
+
+-- You can use SELECT to check the update
+
+
+5.
+-- Delete records from the SalesLT.Product table
+delete from SalesLT.Product
+WHERE ProductCategoryID =
+	(SELECT ProductCategoryID FROM SalesLT.ProductCategory where Name = 'Bells and Horns');
+
+-- Delete records from the SalesLT.ProductCategory table
+delete from SalesLT.ProductCategory
+WHERE ProductCategoryID =
+	(SELECT ProductCategoryID FROM SalesLT.ProductCategory where Name = 'Bells and Horns');
+
+-- You can use SELECT to check the deletions

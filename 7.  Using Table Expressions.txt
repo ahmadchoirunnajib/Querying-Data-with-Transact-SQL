@@ -1,0 +1,34 @@
+ Using Table Expressions
+
+Answer
+
+ 1. 
+-- select the appropriate columns from the appropriate tables
+SELECT p.ProductID, p.Name AS ProductName, pm.Name AS ProductModel, pm.Summary
+FROM SalesLT.Product AS P
+JOIN SalesLT.vProductModelCatalogDescription AS PM
+-- join based on ProductModelID
+ON p.ProductModelID = pm.ProductModelID
+ORDER BY ProductID;
+
+2.
+DECLARE @Colors AS TABLE (Color NVARCHAR(15));
+
+INSERT INTO @Colors
+SELECT DISTINCT Color FROM SalesLT.Product;
+
+SELECT ProductID, Name, Color
+FROM SalesLT.Product
+WHERE Color IN (SELECT Color FROM @Colors);
+
+3.
+SELECT C.ParentProductCategoryName AS ParentCategory,
+       C.ProductCategoryName AS Category,
+       P.ProductID, P.Name AS ProductName
+FROM SalesLT.Product AS P
+JOIN dbo.ufnGetAllCategories() AS C
+ON P.ProductCategoryID = C.ProductCategoryID
+ORDER BY ParentCategory, Category, ProductName;
+
+4.
+not yet

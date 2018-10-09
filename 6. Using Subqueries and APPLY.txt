@@ -1,0 +1,70 @@
+Using Subqueries and APPLY
+
+Answer
+
+1.
+-- select the ProductID, Name, and ListPrice columns
+SELECT ProductID, Name, ListPrice
+FROM SalesLT.Product
+-- filter based on ListPrice
+WHERE ListPrice >
+-- get the average UnitPrice
+(SELECT AVG(UnitPrice) FROM SalesLT.SalesOrderDetail)
+ORDER BY ProductID;
+
+2.
+SELECT ProductID, Name, ListPrice
+FROM SalesLT.Product
+WHERE ProductID IN
+  -- select ProductID from the appropriate table
+  (SELECT ProductID FROM SalesLT.SalesOrderDetail
+   WHERE UnitPrice < 100)
+AND ListPrice >= 100
+ORDER BY ProductID;
+
+3.
+SELECT ProductID, Name, StandardCost, ListPrice,
+-- get the average UnitPrice
+(SELECT AVG(UnitPrice)
+ -- from the appropriate table, aliased as SOD
+ FROM SalesLT.SalesOrderDetail AS SOD
+ -- filter when the appropriate ProductIDs are equal
+ WHERE P.ProductID = SOD.ProductID) AS AvgSellingPrice
+FROM SalesLT.Product AS P
+ORDER BY P.ProductID;
+
+4.
+SELECT ProductID, Name, StandardCost, ListPrice,
+(SELECT AVG(UnitPrice)
+ FROM SalesLT.SalesOrderDetail AS SOD
+ WHERE P.ProductID = SOD.ProductID) AS AvgSellingPrice
+FROM SalesLT.Product AS P
+-- filter based on StandardCost
+WHERE StandardCost >
+-- get the average UnitPrice
+(SELECT AVG(UnitPrice)
+ -- from the appropriate table aliased as SOD
+ FROM SalesLT.SalesOrderDetail AS SOD
+ -- filter when the appropriate ProductIDs are equal
+ WHERE P.ProductID = SOD.ProductID)
+ORDER BY P.ProductID;
+
+5.
+-- select SalesOrderID, CustomerID, FirstName, LastName, TotalDue from the appropriate tables
+SELECT soh.SalesOrderID, soh.CustomerID, ci.FirstName, ci.LastName, soh.TotalDue
+FROM SalesLT.SalesOrderHeader AS SOH
+-- cross apply as per the instructions
+CROSS APPLY dbo.ufnGetCustomerInformation(soh.CustomerID) AS CI
+-- finish the clause
+ORDER BY SOH.SalesOrderID;
+
+6.
+-- select the CustomerID, FirstName, LastName, Addressline1, and City columns from the appropriate tables
+SELECT ca.CustomerID, ci.FirstName, ci.LastName, a.Addressline1, a.City
+FROM SalesLT.Address AS A
+JOIN SalesLT.CustomerAddress AS CA
+-- join based on AddressID
+ON A.AddressID = CA.AddressID
+-- cross apply as per instructions
+CROSS APPLY dbo.ufnGetCustomerInformation(CA.CustomerID) AS CI
+ORDER BY CA.CustomerID;
