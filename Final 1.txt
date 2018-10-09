@@ -1,0 +1,39 @@
+1
+Select QuantityPerUnit from dbo.Products
+
+2
+select distinct CategoryID from Products
+
+3
+SELECT ProductName FROM Products WHERE UnitsInStock > 20
+
+4
+SELECT TOP (10)
+ProductID, ProductName, UnitPrice 
+FROM Products 
+ORDER BY UnitPrice DESC
+
+5
+SELECT ProductID, ProductName, QuantityPerUnit 
+FROM Products 
+ORDER BY ProductName ASC
+
+6
+SELECT ProductID, ProductName, UnitPrice FROM Products ORDER BY UnitsInStock DESC OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY
+
+7
+Select firstname + ' has an EmployeeID of ' + CAST(EmployeeID as VARCHAR(5)) + ' and was born ' + CONVERT(NVARCHAR(30), BirthDate, 126) as Employees FROM Employees
+
+8
+select ShipName + ' is from ' + COALESCE(ShipCity, ShipRegion, ShipCountry) as destionation FROM Orders
+
+9
+select shipname, isnull(shippostalcode, 'unknown') from Orders
+
+10
+select companyname,
+case
+when fax is null then 'modern'
+else 'outdated'
+end as Status
+FROM Suppliers

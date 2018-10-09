@@ -1,0 +1,55 @@
+1
+select o.orderid, od.unitprice
+from orders as o
+join [order details] as od
+on o.orderid = od.orderid
+
+2
+select orderid, firstname
+from orders as o
+join employees as e
+on o.employeeid = e.employeeid
+
+3
+select e.employeeid, t.territorydescription
+from employees as e
+join employeeterritories as et
+on e.employeeid = et.employeeid
+join territories as t
+on t.territoryid = et.territoryid
+
+4
+select country
+from suppliers
+union
+select country
+from customers
+
+5
+select country
+from suppliers
+union all
+select country
+from customers
+
+6
+select round(unitprice, 0)
+from products
+
+7
+select sum(unitsinstock) from products
+
+8
+select orderid, year(orderdate) as OrderYear from orders
+
+9
+select orderid, datename(month, orderdate) as ordermonth from orders
+
+10
+select left(regiondescription, 2) from region
+
+11
+select city, postalcode from suppliers where isnumeric(postalcode) = 1
+
+12
+select upper(LEFT(regiondescription,1)) from region
