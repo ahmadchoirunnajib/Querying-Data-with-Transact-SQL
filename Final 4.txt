@@ -1,0 +1,43 @@
+1.
+select orderid, ShippedDate, choose(month(shippeddate), 'Winter', 'Winter', 'Spring', 'Spring', 'Spring', 'Summer', 'Summer', 'Summer', 'Autumn', 'Autumn', 'Autumn', 'Winter') as ShippedSeason from orders where ShippedDate IS NOT null
+
+2.
+select CompanyName, iif(fax is not null , 'outdated', 'modern') as Status from Suppliers
+
+3.
+select c.Country, sum(od.quantity) as TotalQuantity
+from customers as c
+join orders as o
+on c.customerid = o.customerid
+join [order details] as od
+on o.orderid = od.orderid
+group by rollup(Country)
+
+4.
+
+
+5.
+SELECT 'Average Unit Price' as 'Per Category',
+[1], [2], [3], [4], [5], [6], [7], [8]
+from (
+select CategoryId,
+AVG(UnitPrice) as UnitPrice
+FROM Products
+GROUP BY CategoryID) as SourceTable
+PIVOT(
+AVG(UnitPrice) 
+for CategoryID in ([1], [2], [3], [4], [5], [6], [7], [8])
+) as PivotTable;
+
+6.
+INSERT INTO REGION(RegionID, RegionDescription) 
+VALUES(5, 'Space')
+select * from region where regionid = 5
+
+7.
+UPDATE Region
+SET regiondescription = upper(regiondescription)
+select * from region
+
+8.
+
