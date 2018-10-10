@@ -31,4 +31,13 @@ ON P.ProductCategoryID = C.ProductCategoryID
 ORDER BY ParentCategory, Category, ProductName;
 
 4.
-not yet
+SELECT CompanyContact, SUM(TotalDue) AS Revenue
+FROM 
+	(SELECT CONCAT(c.CompanyName, CONCAT(' (' + c.FirstName + ' ' , c.LastName + ')'))
+	AS CompanyContact, soh.TotalDue
+	FROM SalesLT.Customer AS c
+	JOIN SalesLT.SalesOrderHeader AS soh
+	ON c.CustomerID = soh.CustomerID) 
+	AS CustomerSales(CompanyContact, TotalDue)
+GROUP BY CompanyContact
+ORDER BY CompanyContact;
