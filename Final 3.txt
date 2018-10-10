@@ -1,0 +1,17 @@
+1.
+select productname, unitprice from products
+where unitprice > (
+select avg(unitprice) from [order details]
+)
+
+2.
+select distinct sub.firstname, sub.employeeid from (
+    select firstname,a.employeeid from orders as a join employees as e on a.employeeid = e.employeeid where a.ShipCountry = 'USA'
+) sub
+
+3.
+CREATE table #ProductNames(ProductName varchar(40));
+
+INSERT INTO #ProductNames select ProductName from Products;
+
+select * from #ProductNames;
